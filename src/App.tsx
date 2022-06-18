@@ -1,5 +1,11 @@
+import UrlRoutes from "./routes/Routes";
+
 function App() {
-    return null;
+  return (
+    <>
+      <UrlRoutes />
+    </>
+  );
 }
 
 export default App;
