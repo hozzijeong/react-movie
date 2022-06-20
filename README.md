@@ -1,8 +1,8 @@
 ## HomePage
 
-- 최근 영화
-- 평점 높은영화
-- 다가오는 영화
+- 최근 영화 /movie/latest
+- 평점 높은영화 /movie/top_rated
+- 다가오는 영화 /movie/upcoming
   -> 3개 추가
 
 ## Tv페이지

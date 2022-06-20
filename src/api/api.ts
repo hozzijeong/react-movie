@@ -19,15 +19,33 @@ export interface Movie {
 }
 
 export interface GetMovieList {
-  dates: { maximum: string; minimum: string };
+  dates?: { maximum: string; minimum: string };
   page: number;
   results: Movie[];
   total_pages: number;
   total_results: number;
 }
 
-export function getMovies() {
+export function getNowPlayingMovies() {
   return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
+    (response) => response.json(),
+  );
+}
+
+export function getLatestMovies() {
+  return fetch(`${BASE_PATH}/movie/latest?api_key=${API_KEY}`).then(
+    (response) => response.json(),
+  );
+}
+
+export function getTopRatedMovies() {
+  return fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}`).then(
+    (response) => response.json(),
+  );
+}
+
+export function getUpcomingMovies() {
+  return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`).then(
     (response) => response.json(),
   );
 }
