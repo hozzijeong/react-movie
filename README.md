@@ -7,10 +7,10 @@
 
 ## Tv페이지
 
-- 최근 Tv
-- 평점 높은Tv
-- 유명한 Tv
-- 오늘 방영
+- 최근 Tv /tv/latest
+- 평점 높은Tv /tv/top_rated
+- 유명한 Tv /tv/popular
+- 오늘 방영 /tv/airing_today
 
 ## Search
 

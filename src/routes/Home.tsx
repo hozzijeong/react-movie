@@ -1,12 +1,5 @@
 import { useQuery } from "react-query";
-import {
-  getNowPlayingMovies,
-  GetMovieList,
-  Movie,
-  getLatestMovies,
-  getTopRatedMovies,
-  getUpcomingMovies,
-} from "../api/api";
+import { getMovies, GetMovieList, Movie } from "../api/api";
 import styled from "styled-components";
 import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
 import { makeImagePath } from "../utility/utils";
@@ -94,18 +87,22 @@ const BigOverview = styled.p`
 
 function Home() {
   const { data: nowPlaying, isLoading: nowPlayingIsLoading } =
-    useQuery<GetMovieList>(["movies", "nowPlaying"], getNowPlayingMovies);
+    useQuery<GetMovieList>(["movies", "now_playing"], () =>
+      getMovies("now_playing"),
+    );
 
   const { data: latest, isLoading: latestIsLoading } = useQuery<GetMovieList>(
     ["movies", "latest"],
-    getLatestMovies,
+    () => getMovies("latest"),
   );
 
   const { data: topRated, isLoading: topRatedIsLoading } =
-    useQuery<GetMovieList>(["movies", "topRated"], getTopRatedMovies);
+    useQuery<GetMovieList>(["movies", "top_rated"], () =>
+      getMovies("top_rated"),
+    );
 
   const { data: upComing, isLoading: upComingIsLoading } =
-    useQuery<GetMovieList>(["movies", "upComing"], getUpcomingMovies);
+    useQuery<GetMovieList>(["movies", "upcoming"], () => getMovies("upcoming"));
 
   const nav = useNavigate();
 
@@ -166,6 +163,7 @@ function Home() {
               index={index}
               offset={offset}
               title="Now Playing"
+              category="movies"
             />
           ) : null}
           {latest?.results ? (
@@ -175,6 +173,7 @@ function Home() {
               index={index}
               offset={offset}
               title="Latest"
+              category="movies"
             />
           ) : null}
 
@@ -185,6 +184,7 @@ function Home() {
               index={index}
               offset={offset}
               title="Top Rated"
+              category="movies"
             />
           ) : null}
 
@@ -195,6 +195,7 @@ function Home() {
               index={index}
               offset={offset}
               title="UPComing"
+              category="movies"
             />
           ) : null}
 

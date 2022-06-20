@@ -2,8 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { GetMovieList, Movie } from "../api/api";
-import { curMovieData } from "../atom";
+import { GetMovieList, Movie, TvShow } from "../api/api";
+import { curMovieData, curTvData } from "../atom";
 import { makeImagePath } from "../utility/utils";
 
 const Title = styled.h1`
@@ -89,31 +89,30 @@ const infoVariants = {
 };
 
 interface ISlider {
-  results: Movie[] | null;
+  results: any[] | null;
   toggleLeaving: () => void;
   index: number;
   offset: number;
   title: string;
+  category: string;
 }
 
-function Slider({ results, toggleLeaving, index, offset, title }: ISlider) {
+function Slider({
+  results,
+  toggleLeaving,
+  index,
+  offset,
+  title,
+  category,
+}: ISlider) {
   const nav = useNavigate();
 
-  // const onlyBackdropPath = (movies: Movie[] | undefined) => {
-  //   if (movies?.length) {
-  //     const copy = { ...movies };
-  //     copy.map((movie, index) => {
-  //       if (movie.backdrop_path === null) {
-  //         return copy.splice(index, 1);
-  //       }
-  //     });
-  //     return copy;
-  //   } else return null;
-  // };
-  const onBoxClicked = (movieId: number) => {
-    nav(`/movies/${movieId}`);
+  const onBoxClicked = (dataId: number) => {
+    // Tv Sliderㄴㅑ Movie sliderㄴㅑㅇㅔ ㄸㅏㄹㅏ ㄱㅏㅂㅅㅇㅣ ㅂㅏㄲㅜㅣㅁ
+    nav(`/${category}/${dataId}`);
   };
   const setMovieData = useSetRecoilState(curMovieData);
+  const setTvData = useSetRecoilState(curTvData);
 
   return (
     <SliderContainer>
@@ -126,7 +125,6 @@ function Slider({ results, toggleLeaving, index, offset, title }: ISlider) {
           exit="exit"
           transition={{ type: "tween", duration: 1 }}
           onHoverStart={() => setMovieData(results)}
-          // onHoverEnd={() => setMovieData(null)}
           key={index}
         >
           {results
@@ -141,10 +139,10 @@ function Slider({ results, toggleLeaving, index, offset, title }: ISlider) {
                 variants={boxVariants}
                 transition={{ type: "tween" }}
                 onClick={() => onBoxClicked(data.id)}
-                bgPhoto={makeImagePath(data.backdrop_path, "w500")}
+                bgPhoto={makeImagePath(data?.backdrop_path as string, "w500")}
               >
                 <Info variants={infoVariants}>
-                  <h4>{data.title}</h4>
+                  <h4>{data?.title === null ? data?.title : data?.name}</h4>
                 </Info>
               </Box>
             ))}
