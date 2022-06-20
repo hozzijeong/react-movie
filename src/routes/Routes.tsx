@@ -6,7 +6,7 @@ import Tv from "./Tv";
 
 function UrlRoutes() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
       <Header />
       <Routes>
         <Route path="/search" element={<Search />}></Route>
