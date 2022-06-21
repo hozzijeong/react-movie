@@ -87,22 +87,22 @@ const BigOverview = styled.p`
 
 function Tv() {
   const { data: airingToday, isLoading: airingTodayIsLoading } =
-    useQuery<GetTvList>(["tv_show", "airing_today"], () =>
+    useQuery<GetTvList>(["tv", "airing_today"], () =>
       getTVShow("airing_today"),
     );
 
-  const { data: latest, isLoading: latestIsLoading } = useQuery<GetTvList>(
-    ["tv_show", "latest"],
+  const { data: latest, isLoading: latestIsLoading } = useQuery<TvShow>(
+    ["tv", "latest"],
     () => getTVShow("latest"),
   );
 
   const { data: topRated, isLoading: topRatedIsLoading } = useQuery<GetTvList>(
-    ["tv_show", "top_rated"],
+    ["tv", "top_rated"],
     () => getTVShow("top_rated"),
   );
 
   const { data: popular, isLoading: popularIsLoading } = useQuery<GetTvList>(
-    ["tv_show", "popular"],
+    ["tv", "popular"],
     () => getTVShow("popular"),
   );
 
@@ -127,13 +127,18 @@ function Tv() {
   const offset = 6;
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
-  const onOverlayClick = () => nav("/tv");
+  const onOverlayClick = () => {
+    console.log(tvPathMatch);
+    nav("/tv");
+  };
 
-  const clickedMovie = (results: TvShow[] | null) => {
+  const clickeTv = (results: TvShow[] | null) => {
     if (tvPathMatch?.params.id) {
-      return results?.find((movie) => movie.id + "" === tvPathMatch.params.id);
+      return results?.find((tv) => tv.id + "" === tvPathMatch.params.id);
     } else return null;
   };
+
+  console.log(latest);
 
   const isLoading =
     airingTodayIsLoading ||
@@ -148,10 +153,10 @@ function Tv() {
         <>
           <Banner
             onClick={incraseIndex}
-            bgPhoto={makeImagePath(airingToday?.results[0].backdrop_path || "")}
+            bgPhoto={makeImagePath(latest?.backdrop_path || "")}
           >
-            <Title>{airingToday?.results[0].name}</Title>
-            <Overview>{airingToday?.results[0].overview}</Overview>
+            <Title>{latest?.name}</Title>
+            <Overview>{latest?.overview}</Overview>
           </Banner>
 
           {airingToday?.results ? (
@@ -161,16 +166,6 @@ function Tv() {
               index={index}
               offset={offset}
               title="Airing Today"
-              category="tv"
-            />
-          ) : null}
-          {latest?.results ? (
-            <Slider
-              results={latest?.results}
-              toggleLeaving={toggleLeaving}
-              index={index}
-              offset={offset}
-              title="Latest"
               category="tv"
             />
           ) : null}
@@ -209,18 +204,22 @@ function Tv() {
                   style={{ top: scrollY.get() + 100 }}
                   layoutId={tvPathMatch.params.id}
                 >
-                  {clickedMovie(curTv) && (
+                  {clickeTv(curTv) && (
                     <>
                       <BigCover
                         style={{
                           backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                            clickedMovie(curTv)?.backdrop_path as string,
+                            clickeTv(curTv)?.backdrop_path as string,
                             "w500",
                           )})`,
                         }}
                       />
-                      <BigTitle>{clickedMovie(curTv)?.name}</BigTitle>
-                      <BigOverview>{clickedMovie(curTv)?.overview}</BigOverview>
+                      <BigTitle>{clickeTv(curTv)?.name}</BigTitle>
+                      <BigOverview>
+                        {clickeTv(curTv)?.overview === ""
+                          ? "there is no OverView"
+                          : clickeTv(curTv)?.overview}
+                      </BigOverview>
                     </>
                   )}
                 </BigMovie>

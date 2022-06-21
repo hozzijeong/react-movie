@@ -91,7 +91,7 @@ function Home() {
       getMovies("now_playing"),
     );
 
-  const { data: latest, isLoading: latestIsLoading } = useQuery<GetMovieList>(
+  const { data: latest, isLoading: latestIsLoading } = useQuery<Movie>(
     ["movies", "latest"],
     () => getMovies("latest"),
   );
@@ -107,7 +107,6 @@ function Home() {
   const nav = useNavigate();
 
   const curMovie = useRecoilValue(curMovieData);
-  console.log(curMovie);
   const moviePathMatch: PathMatch<string> | null = useMatch("/movies/:id");
 
   const { scrollY } = useViewportScroll();
@@ -150,10 +149,10 @@ function Home() {
         <>
           <Banner
             onClick={incraseIndex}
-            bgPhoto={makeImagePath(nowPlaying?.results[0].backdrop_path || "")}
+            bgPhoto={makeImagePath(latest?.backdrop_path || "")}
           >
-            <Title>{nowPlaying?.results[0].title}</Title>
-            <Overview>{nowPlaying?.results[0].overview}</Overview>
+            <Title>{latest?.title}</Title>
+            <Overview>{latest?.overview}</Overview>
           </Banner>
 
           {nowPlaying?.results ? (
@@ -163,16 +162,6 @@ function Home() {
               index={index}
               offset={offset}
               title="Now Playing"
-              category="movies"
-            />
-          ) : null}
-          {latest?.results ? (
-            <Slider
-              results={latest?.results}
-              toggleLeaving={toggleLeaving}
-              index={index}
-              offset={offset}
-              title="Latest"
               category="movies"
             />
           ) : null}

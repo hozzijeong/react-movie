@@ -108,7 +108,6 @@ function Slider({
   const nav = useNavigate();
 
   const onBoxClicked = (dataId: number) => {
-    // Tv Sliderㄴㅑ Movie sliderㄴㅑㅇㅔ ㄸㅏㄹㅏ ㄱㅏㅂㅅㅇㅣ ㅂㅏㄲㅜㅣㅁ
     nav(`/${category}/${dataId}`);
   };
   const setMovieData = useSetRecoilState(curMovieData);
@@ -124,7 +123,9 @@ function Slider({
           animate="visible"
           exit="exit"
           transition={{ type: "tween", duration: 1 }}
-          onHoverStart={() => setMovieData(results)}
+          onHoverStart={() =>
+            category === "movies" ? setMovieData(results) : setTvData(results)
+          }
           key={index}
         >
           {results
@@ -142,7 +143,7 @@ function Slider({
                 bgPhoto={makeImagePath(data?.backdrop_path as string, "w500")}
               >
                 <Info variants={infoVariants}>
-                  <h4>{data?.title === null ? data?.title : data?.name}</h4>
+                  <h4>{category === "movies" ? data?.title : data?.name}</h4>
                 </Info>
               </Box>
             ))}
