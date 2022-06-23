@@ -1,5 +1,85 @@
-function Box() {
-  return null;
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { makeImagePath } from "../utility/utils";
+
+const BoxContainer = styled(motion.div)<{ bgPhoto: string }>`
+  background-color: white;
+  height: 200px;
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
+  font-size: 66px;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
+const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 18px;
+  }
+`;
+
+const boxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -80,
+    transition: {
+      delay: 0.5,
+      duaration: 0.1,
+      type: "tween",
+    },
+  },
+};
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      duaration: 0.1,
+      type: "tween",
+    },
+  },
+};
+
+interface BoxInterface {
+  data: any;
+  category: string;
+}
+
+function Box({ data, category }: BoxInterface) {
+  const nav = useNavigate();
+  const onBoxClicked = (dataId: number) => {
+    nav(`/${category}/${dataId}`);
+  };
+  return (
+    <BoxContainer
+      layoutId={data.id + ""}
+      whileHover="hover"
+      initial="normal"
+      variants={boxVariants}
+      transition={{ type: "tween" }}
+      onClick={() => onBoxClicked(data.id)}
+      bgPhoto={makeImagePath(data?.backdrop_path as string, "w500")}
+    >
+      <Info variants={infoVariants}>
+        <h4>{category === "movies" ? data?.title : data?.name}</h4>
+      </Info>
+    </BoxContainer>
+  );
 }
 
 export default Box;

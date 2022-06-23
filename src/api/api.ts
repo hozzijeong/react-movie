@@ -60,3 +60,15 @@ export function getTVShow(category: String) {
     (response) => response.json(),
   );
 }
+
+export function searchTVShow(query: string | null) {
+  return fetch(
+    `${BASE_PATH}/search/tv/?api_key=${API_KEY}&query=${query}`,
+  ).then((response) => response.json());
+}
+
+export function searchMovie(query: string | null) {
+  return fetch(
+    `${BASE_PATH}/search/movie/?api_key=${API_KEY}&query=${query}`,
+  ).then((response) => response.json());
+}
