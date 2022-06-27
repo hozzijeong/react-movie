@@ -1,3 +1,5 @@
+import { json } from "stream/consumers";
+
 const API_KEY = "83abefa42986ae190c0bbb24c6d2e0ae";
 const BASE_PATH = "https://api.themoviedb.org/3";
 
@@ -50,25 +52,45 @@ export interface GetTvList {
 }
 
 export function getMovies(category: String) {
-  return fetch(`${BASE_PATH}/movie/${category}?api_key=${API_KEY}`).then(
-    (response) => response.json(),
-  );
+  return fetch(`${BASE_PATH}/movie/${category}?api_key=${API_KEY}`)
+    .then((response) => response.json())
+    .then((json) => {
+      const filterd = json.results?.filter(
+        (x: Movie) => x.backdrop_path !== null,
+      );
+      return { ...json, results: filterd };
+    });
 }
 
 export function getTVShow(category: String) {
-  return fetch(`${BASE_PATH}/tv/${category}?api_key=${API_KEY}`).then(
-    (response) => response.json(),
-  );
+  return fetch(`${BASE_PATH}/tv/${category}?api_key=${API_KEY}`)
+    .then((response) => response.json())
+    .then((json) => {
+      const filterd = json.results?.filter(
+        (x: TvShow) => x.backdrop_path !== null,
+      );
+      return { ...json, results: filterd };
+    });
 }
 
 export function searchTVShow(query: string | null) {
-  return fetch(
-    `${BASE_PATH}/search/tv/?api_key=${API_KEY}&query=${query}`,
-  ).then((response) => response.json());
+  return fetch(`${BASE_PATH}/search/tv/?api_key=${API_KEY}&query=${query}`)
+    .then((response) => response.json())
+    .then((json) => {
+      const filterd = json.results?.filter(
+        (x: TvShow) => x.backdrop_path !== null,
+      );
+      return { ...json, results: filterd };
+    });
 }
 
 export function searchMovie(query: string | null) {
-  return fetch(
-    `${BASE_PATH}/search/movie/?api_key=${API_KEY}&query=${query}`,
-  ).then((response) => response.json());
+  return fetch(`${BASE_PATH}/search/movie/?api_key=${API_KEY}&query=${query}`)
+    .then((response) => response.json())
+    .then((json) => {
+      const filterd = json.results?.filter(
+        (x: Movie) => x.backdrop_path !== null,
+      );
+      return { ...json, results: filterd };
+    });
 }
