@@ -1,24 +1,12 @@
 import { useQuery } from "react-query";
 import { GetTvList, getTVShow, TvShow } from "../api/api";
-import { AnimatePresence, useViewportScroll } from "framer-motion";
 import { makeImagePath, sliceArr } from "../utility/utils";
 import { useState } from "react";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import Slider from "../components/Slider";
 import { useRecoilValue } from "recoil";
 import { curTvData } from "../atom";
-import {
-  Banner,
-  BigCover,
-  BigMovie,
-  BigOverview,
-  BigTitle,
-  Loader,
-  Overlay,
-  Overview,
-  Title,
-  Wrapper,
-} from "../components/Styled";
+import { Banner, Loader, Overview, Title, Wrapper } from "../components/Styled";
+import { Overlay } from "../components/Overlay";
 
 function Tv() {
   const { data: airingToday, isLoading: airingTodayIsLoading } =
@@ -41,12 +29,7 @@ function Tv() {
     () => getTVShow("popular"),
   );
 
-  const nav = useNavigate();
-
   const curTv = useRecoilValue(curTvData);
-  const tvPathMatch: PathMatch<string> | null = useMatch("/tv/:id");
-
-  const { scrollY } = useViewportScroll();
 
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -61,17 +44,6 @@ function Tv() {
   };
   const offset = 6;
   const toggleLeaving = () => setLeaving((prev) => !prev);
-
-  const onOverlayClick = () => {
-    console.log(tvPathMatch);
-    nav("/tv");
-  };
-
-  const clickeTv = (results: TvShow[] | null) => {
-    if (tvPathMatch?.params.id) {
-      return results?.find((tv) => tv.id + "" === tvPathMatch.params.id);
-    } else return null;
-  };
 
   const isLoading =
     airingTodayIsLoading ||
@@ -125,40 +97,7 @@ function Tv() {
             />
           ) : null}
 
-          <AnimatePresence>
-            {tvPathMatch ? (
-              <>
-                <Overlay
-                  onClick={onOverlayClick}
-                  exit={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                />
-                <BigMovie
-                  style={{ top: scrollY.get() + 100 }}
-                  layoutId={tvPathMatch.params.id}
-                >
-                  {clickeTv(curTv) && (
-                    <>
-                      <BigCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                            clickeTv(curTv)?.backdrop_path as string,
-                            "w500",
-                          )})`,
-                        }}
-                      />
-                      <BigTitle>{clickeTv(curTv)?.name}</BigTitle>
-                      <BigOverview>
-                        {clickeTv(curTv)?.overview === ""
-                          ? "there is no OverView"
-                          : clickeTv(curTv)?.overview}
-                      </BigOverview>
-                    </>
-                  )}
-                </BigMovie>
-              </>
-            ) : null}
-          </AnimatePresence>
+          <Overlay curContent={curTv} />
         </>
       )}
     </Wrapper>

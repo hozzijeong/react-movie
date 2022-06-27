@@ -1,24 +1,12 @@
 import { useQuery } from "react-query";
 import { getMovies, GetMovieList, Movie } from "../api/api";
-import { AnimatePresence, useViewportScroll } from "framer-motion";
 import { makeImagePath, sliceArr } from "../utility/utils";
 import { useState } from "react";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import Slider from "../components/Slider";
 import { useRecoilValue } from "recoil";
 import { curMovieData } from "../atom";
-import {
-  Banner,
-  BigCover,
-  BigMovie,
-  BigOverview,
-  BigTitle,
-  Loader,
-  Overlay,
-  Overview,
-  Title,
-  Wrapper,
-} from "../components/Styled";
+import { Banner, Loader, Overview, Title, Wrapper } from "../components/Styled";
+import { Overlay } from "../components/Overlay";
 
 function Home() {
   const { data: nowPlaying, isLoading: nowPlayingIsLoading } =
@@ -39,12 +27,7 @@ function Home() {
   const { data: upComing, isLoading: upComingIsLoading } =
     useQuery<GetMovieList>(["movies", "upcoming"], () => getMovies("upcoming"));
 
-  const nav = useNavigate();
-
   const curMovie = useRecoilValue(curMovieData);
-  const moviePathMatch: PathMatch<string> | null = useMatch("/movies/:id");
-
-  const { scrollY } = useViewportScroll();
 
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -59,16 +42,6 @@ function Home() {
   };
   const offset = 6;
   const toggleLeaving = () => setLeaving((prev) => !prev);
-
-  const onOverlayClick = () => nav("/");
-
-  const clickedMovie = (results: Movie[] | null) => {
-    if (moviePathMatch?.params.id) {
-      return results?.find(
-        (movie) => movie.id + "" === moviePathMatch.params.id,
-      );
-    } else return null;
-  };
 
   const isLoading =
     nowPlayingIsLoading ||
@@ -122,39 +95,7 @@ function Home() {
               category="movies"
             />
           ) : null}
-
-          <AnimatePresence>
-            {moviePathMatch ? (
-              <>
-                <Overlay
-                  onClick={onOverlayClick}
-                  exit={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                />
-                <BigMovie
-                  style={{ top: scrollY.get() + 100 }}
-                  layoutId={moviePathMatch.params.id}
-                >
-                  {clickedMovie(curMovie) && (
-                    <>
-                      <BigCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                            clickedMovie(curMovie)?.backdrop_path as string,
-                            "w500",
-                          )})`,
-                        }}
-                      />
-                      <BigTitle>{clickedMovie(curMovie)?.title}</BigTitle>
-                      <BigOverview>
-                        {clickedMovie(curMovie)?.overview}
-                      </BigOverview>
-                    </>
-                  )}
-                </BigMovie>
-              </>
-            ) : null}
-          </AnimatePresence>
+          <Overlay curContent={curMovie} />
         </>
       )}
     </Wrapper>
