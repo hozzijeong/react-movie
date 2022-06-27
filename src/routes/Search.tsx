@@ -65,7 +65,6 @@ function Search() {
       );
     } else return null;
   };
-  console.log(curContent);
 
   return (
     <Wrapper>
