@@ -1,8 +1,7 @@
 import { useQuery } from "react-query";
 import { getMovies, GetMovieList, Movie } from "../api/api";
-import styled from "styled-components";
-import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
-import { makeImagePath } from "../utility/utils";
+import { AnimatePresence, useViewportScroll } from "framer-motion";
+import { makeImagePath, sliceArr } from "../utility/utils";
 import { useState } from "react";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import Slider from "../components/Slider";
@@ -93,10 +92,10 @@ function Home() {
 
           {nowPlaying?.results ? (
             <Slider
-              results={nowPlaying?.results}
+              results={sliceArr(nowPlaying?.results, offset, index)}
               toggleLeaving={toggleLeaving}
               index={index}
-              offset={offset}
+              // offset={offset}
               title="Now Playing"
               category="movies"
             />
@@ -104,10 +103,10 @@ function Home() {
 
           {topRated?.results ? (
             <Slider
-              results={topRated?.results}
+              results={sliceArr(topRated?.results, offset, index)}
               toggleLeaving={toggleLeaving}
               index={index}
-              offset={offset}
+              // offset={offset}
               title="Top Rated"
               category="movies"
             />
@@ -115,10 +114,10 @@ function Home() {
 
           {upComing?.results ? (
             <Slider
-              results={upComing?.results}
+              results={sliceArr(upComing?.results, offset, index)}
               toggleLeaving={toggleLeaving}
               index={index}
-              offset={offset}
+              // offset={offset}
               title="UPComing"
               category="movies"
             />

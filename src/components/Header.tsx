@@ -15,6 +15,7 @@ const Nav = styled(motion.nav)`
   padding: 20px 60px;
   color: white;
   height: 100px;
+  z-index: 100;
 `;
 
 const Container = styled.div`

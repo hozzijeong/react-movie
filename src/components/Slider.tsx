@@ -1,17 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { GetMovieList, Movie, TvShow } from "../api/api";
 import { curMovieData, curTvData } from "../atom";
-import { makeImagePath } from "../utility/utils";
 import Box from "./Box";
-
-const Title = styled.h1`
-  font-size: 48px;
-  margin: 20px 0 20px 60px;
-  font-weight: bold;
-`;
+import { CategoryTitle } from "./Styled";
 
 const SliderContainer = styled.div`
   position: relative;
@@ -42,7 +34,7 @@ interface ISlider {
   results: any[] | null;
   toggleLeaving?: () => void;
   index: number;
-  offset: number;
+  // offset: number;
   title: string;
   category: string;
 }
@@ -51,7 +43,7 @@ function Slider({
   results,
   toggleLeaving,
   index,
-  offset,
+  // offset,
   title,
   category,
 }: ISlider) {
@@ -60,7 +52,7 @@ function Slider({
 
   return (
     <SliderContainer>
-      <Title>{title}</Title>
+      <CategoryTitle>{title}</CategoryTitle>
       <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
         <Row
           variants={rowVariants}
@@ -73,12 +65,9 @@ function Slider({
           }
           key={index}
         >
-          {results
-            ?.slice(1)
-            .slice(offset * index, offset * index + offset)
-            .map((data) => (
-              <Box key={data.id} data={data} category={category} />
-            ))}
+          {results?.map((data) => (
+            <Box key={data.id} data={data} category={category} />
+          ))}
         </Row>
       </AnimatePresence>
     </SliderContainer>

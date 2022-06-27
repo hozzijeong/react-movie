@@ -24,6 +24,12 @@ export const Banner = styled.div<{ bgPhoto: string }>`
   background-size: cover;
 `;
 
+export const CategoryTitle = styled.h1`
+  font-size: 48px;
+  margin: 20px 0 20px 60px;
+  font-weight: bold;
+`;
+
 export const Title = styled.h2`
   font-size: 68px;
   margin-bottom: 20px; ;

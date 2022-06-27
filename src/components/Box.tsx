@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { makeImagePath } from "../utility/utils";
 
@@ -36,7 +36,7 @@ const boxVariants = {
   },
   hover: {
     scale: 1.3,
-    y: -80,
+    // y: -80,
     transition: {
       delay: 0.5,
       duaration: 0.1,
@@ -62,8 +62,15 @@ interface BoxInterface {
 
 function Box({ data, category }: BoxInterface) {
   const nav = useNavigate();
+  const curLoc = useLocation();
+  const [searchParams, _] = useSearchParams();
+  const keyword = searchParams.get("keyword");
   const onBoxClicked = (dataId: number) => {
-    nav(`/${category}/${dataId}`);
+    nav(
+      `${curLoc.pathname === "/" ? "movies" : curLoc.pathname}/${dataId}${
+        keyword ? "?keyword=" + keyword : ""
+      }`,
+    );
   };
   return (
     <BoxContainer
@@ -73,7 +80,10 @@ function Box({ data, category }: BoxInterface) {
       variants={boxVariants}
       transition={{ type: "tween" }}
       onClick={() => onBoxClicked(data.id)}
-      bgPhoto={makeImagePath(data?.backdrop_path as string, "w500")}
+      bgPhoto={makeImagePath(
+        data?.backdrop_path === null ? data?.poster_path : data?.backdrop_path,
+        "w500",
+      )}
     >
       <Info variants={infoVariants}>
         <h4>{category === "movies" ? data?.title : data?.name}</h4>

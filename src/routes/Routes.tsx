@@ -9,7 +9,9 @@ function UrlRoutes() {
     <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
       <Header />
       <Routes>
-        <Route path="/search" element={<Search />}></Route>
+        <Route path="/search" element={<Search />}>
+          <Route path="/search/:id" element={<Search />} />
+        </Route>
         <Route path="/tv" element={<Tv />}>
           <Route path="/tv/:id" element={<Tv />} />
         </Route>
