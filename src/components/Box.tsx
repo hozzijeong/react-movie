@@ -10,11 +10,11 @@ const BoxContainer = styled(motion.div)<{ bgPhoto: string }>`
   background-size: cover;
   background-position: center center;
   font-size: 66px;
-  &:first-child {
-    transform-origin: center left;
-  }
-  &:last-child {
+  &:nth-child(6n) {
     transform-origin: center right;
+  }
+  &:nth-child(6n + 1) {
+    transform-origin: center left;
   }
 `;
 const Info = styled(motion.div)`
@@ -80,10 +80,7 @@ function Box({ data, category }: BoxInterface) {
       variants={boxVariants}
       transition={{ type: "tween" }}
       onClick={() => onBoxClicked(data.id)}
-      bgPhoto={makeImagePath(
-        data?.backdrop_path === null ? data?.poster_path : data?.backdrop_path,
-        "w500",
-      )}
+      bgPhoto={makeImagePath(data?.backdrop_path, "w500")}
     >
       <Info variants={infoVariants}>
         <h4>{category === "movies" ? data?.title : data?.name}</h4>

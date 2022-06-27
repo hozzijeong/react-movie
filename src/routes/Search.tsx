@@ -32,7 +32,7 @@ import { makeImagePath } from "../utility/utils";
 
 const GridTemplate = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(6, auto);
   gap: 15px;
   padding: 20px;
 `;
