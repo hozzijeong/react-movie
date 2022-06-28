@@ -48,7 +48,7 @@ export function Overlay({ curContent }: any) {
             layoutId={searchPathMatch.params.id}
           >
             {clickedContent(curContent) && (
-              <>
+              <div style={{ position: "relative" }}>
                 <BigCover
                   style={{
                     backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
@@ -57,15 +57,24 @@ export function Overlay({ curContent }: any) {
                     )})`,
                   }}
                 />
-                <BigTitle>
-                  {clickedContent(curContent)?.title
-                    ? clickedContent(curContent)?.title
-                    : clickedContent(curContent)?.name}
-                </BigTitle>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    height: "400px",
+                    width: "100%",
+                  }}
+                >
+                  <BigTitle>
+                    {clickedContent(curContent)?.title
+                      ? clickedContent(curContent)?.title
+                      : clickedContent(curContent)?.name}
+                  </BigTitle>
+                </div>
                 <BigOverview>
                   {clickedContent(curContent)?.overview}
                 </BigOverview>
-              </>
+              </div>
             )}
           </BigMovie>
         </>

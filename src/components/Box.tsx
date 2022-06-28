@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { movieGenre, tvGenre } from "../atom";
 import { makeImagePath } from "../utility/utils";
 
 const BoxContainer = styled(motion.div)<{ bgPhoto: string }>`
@@ -10,7 +13,7 @@ const BoxContainer = styled(motion.div)<{ bgPhoto: string }>`
   background-size: cover;
   background-position: center center;
   font-size: 66px;
-  &:nth-child(6n) {
+  position:relative &:nth-child(6n) {
     transform-origin: center right;
   }
   &:nth-child(6n + 1) {
@@ -18,15 +21,23 @@ const BoxContainer = styled(motion.div)<{ bgPhoto: string }>`
   }
 `;
 const Info = styled(motion.div)`
-  padding: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
+  padding: 15px;
+  background-color: ${(props) => props.theme.black.veryDark};
   opacity: 0;
   position: absolute;
   width: 100%;
-  bottom: 0;
-  h4 {
-    text-align: center;
-    font-size: 18px;
+  bottom: -45px;
+  h3 {
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+    text-overflow: ellipsis2;
+  }
+
+  h6 {
+    margin-top: 10px;
+    text-align: left;
+    font-size: 14px;
   }
 `;
 
@@ -62,7 +73,6 @@ interface BoxInterface {
 }
 
 function Box({ data, category }: BoxInterface) {
-  // console.log(data);
   const nav = useNavigate();
   const curLoc = useLocation();
   const [searchParams, _] = useSearchParams();
@@ -74,20 +84,31 @@ function Box({ data, category }: BoxInterface) {
       }`,
     );
   };
+
+  const contentGenres = useRecoilValue(
+    category === "movies" ? movieGenre : tvGenre,
+  );
+
+  const genreArr = data.genre_ids.map(
+    (x: number) => contentGenres?.find((ele) => ele.id === x)?.name,
+  );
   return (
-    <BoxContainer
-      layoutId={data.id + ""}
-      whileHover="hover"
-      initial="normal"
-      variants={boxVariants}
-      transition={{ type: "tween" }}
-      onClick={() => onBoxClicked(data.id)}
-      bgPhoto={makeImagePath(data?.backdrop_path, "w500")}
-    >
-      <Info variants={infoVariants}>
-        <h4>{category === "movies" ? data?.title : data?.name}</h4>
-      </Info>
-    </BoxContainer>
+    <>
+      <BoxContainer
+        layoutId={data.id + ""}
+        whileHover="hover"
+        initial="normal"
+        variants={boxVariants}
+        transition={{ type: "tween" }}
+        onClick={() => onBoxClicked(data.id)}
+        bgPhoto={makeImagePath(data?.backdrop_path, "w500")}
+      >
+        <Info variants={infoVariants}>
+          <h3>{category === "movies" ? data.title : data.name}</h3>
+          <h6>Genres:{genreArr.map((x: string) => x + " ")}</h6>
+        </Info>
+      </BoxContainer>
+    </>
   );
 }
 
