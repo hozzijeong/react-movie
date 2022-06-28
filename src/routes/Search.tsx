@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { GetMovieList, GetTvList, searchMovie, searchTVShow } from "../api/api";
-import { curContentData } from "../atom";
 import Box from "../components/Box";
 import { Overlay } from "../components/Overlay";
 import { BigTitle, CategoryTitle, Loader, Wrapper } from "../components/Styled";
@@ -41,9 +40,9 @@ function Search() {
   const isConsits =
     movies?.results.length === 0 && tvShow?.results.length === 0;
 
-  const [curContent, setCurContent] = useRecoilState(curContentData);
-
   const isLoading = movieIsLoading || tvShowIsLoading;
+
+  const [isMovie, setIsMovie] = useState(true);
 
   return (
     <Wrapper>
@@ -57,7 +56,7 @@ function Search() {
           <CategoryTitle>
             {movies?.results.length !== 0 ? "Movies" : null}
           </CategoryTitle>
-          <GridTemplate onHoverStart={() => setCurContent(movies?.results)}>
+          <GridTemplate onHoverStart={() => setIsMovie(true)}>
             {movies?.results
               .filter((x) => x.backdrop_path !== "")
               .map((x) => (
@@ -68,14 +67,14 @@ function Search() {
           <CategoryTitle>
             {tvShow?.results.length !== 0 ? "Tv Show" : null}
           </CategoryTitle>
-          <GridTemplate onHoverStart={() => setCurContent(tvShow?.results)}>
+          <GridTemplate onHoverStart={() => setIsMovie(false)}>
             {tvShow?.results
               .filter((x) => x.backdrop_path !== "")
               .map((x) => (
                 <Box key={x.id} data={x} category="tv" />
               ))}
           </GridTemplate>
-          <Overlay curContent={curContent} />
+          <Overlay category={isMovie ? "movies" : "tv"} />
         </>
       )}
     </Wrapper>

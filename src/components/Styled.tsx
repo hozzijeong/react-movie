@@ -49,7 +49,7 @@ export const OverlayContainer = styled(motion.div)`
   opacity: 0;
 `;
 
-export const BigMovie = styled(motion.div)`
+export const BigContent = styled(motion.div)`
   position: absolute;
   width: 40vw;
   height: 80vh;
@@ -58,7 +58,7 @@ export const BigMovie = styled(motion.div)`
   margin: 0 auto;
   border-radius: 15px;
   overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
+  background-color: ${(props) => props.theme.black.veryDark};
 `;
 
 export const BigCover = styled.div`

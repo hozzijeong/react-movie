@@ -3,8 +3,6 @@ import { GetTvList, getTVShow, TvShow } from "../api/api";
 import { makeImagePath, sliceArr } from "../utility/utils";
 import { useState } from "react";
 import Slider from "../components/Slider";
-import { useRecoilValue } from "recoil";
-import { curTvData } from "../atom";
 import { Banner, Loader, Overview, Title, Wrapper } from "../components/Styled";
 import { Overlay } from "../components/Overlay";
 
@@ -28,8 +26,6 @@ function Tv() {
     ["tv", "popular"],
     () => getTVShow("popular"),
   );
-
-  const curTv = useRecoilValue(curTvData);
 
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -97,7 +93,7 @@ function Tv() {
             />
           ) : null}
 
-          <Overlay curContent={curTv} />
+          <Overlay category="tv" />
         </>
       )}
     </Wrapper>

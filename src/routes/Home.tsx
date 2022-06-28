@@ -10,8 +10,8 @@ import {
 import { makeImagePath, sliceArr } from "../utility/utils";
 import { useEffect, useState } from "react";
 import Slider from "../components/Slider";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { curMovieData, movieGenre, tvGenre } from "../atom";
+import { useRecoilState } from "recoil";
+import { movieGenre, tvGenre } from "../atom";
 import { Banner, Loader, Overview, Title, Wrapper } from "../components/Styled";
 import { Overlay } from "../components/Overlay";
 
@@ -49,7 +49,6 @@ function Home() {
     if (!tvGenres.length) setTvGenre(getTvGenres?.genres as Genres[]);
   }, []);
 
-  const curMovie = useRecoilValue(curMovieData);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const incraseIndex = () => {
@@ -116,7 +115,7 @@ function Home() {
               category="movies"
             />
           ) : null}
-          <Overlay curContent={curMovie} />
+          <Overlay category="movies" />
         </>
       )}
     </Wrapper>

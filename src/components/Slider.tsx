@@ -1,7 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { curMovieData, curTvData } from "../atom";
 import Box from "./Box";
 import { CategoryTitle } from "./Styled";
 
@@ -48,9 +46,6 @@ function Slider({
   title,
   category,
 }: ISlider) {
-  const setMovieData = useSetRecoilState(curMovieData);
-  const setTvData = useSetRecoilState(curTvData);
-
   return (
     <SliderContainer>
       <CategoryTitle>{title}</CategoryTitle>
@@ -61,9 +56,6 @@ function Slider({
           animate="visible"
           exit="exit"
           transition={{ type: "tween", duration: 1 }}
-          onHoverStart={() =>
-            category === "movies" ? setMovieData(results) : setTvData(results)
-          }
           key={index}
         >
           {results?.map((data) => (
