@@ -12,16 +12,8 @@ import {
   MovieDetailInterface,
   TvDetailInterface,
 } from "../api/api";
-import { makeImagePath } from "../utility/utils";
 import MovieDetail from "./MovieDetail";
-import {
-  BigCover,
-  BigContent,
-  BigOverview,
-  BigTitle,
-  OverlayContainer,
-  Loader,
-} from "./Styled";
+import { BigContent, OverlayContainer, Loader } from "./Styled";
 import TvDetail from "./TvDetail";
 
 interface OverlayInterface {
@@ -55,15 +47,6 @@ export function Overlay({ category }: OverlayInterface) {
     alert(message);
     onOverlayClick();
   };
-  console.log(category, id, data);
-
-  // 데이터 load를 해야하는데,,,
-  // const clickedContent = (results: any[] | null) => {
-  //   if (!Number.isNaN(id) && results) {
-  //     return
-  //   } else return null;
-  // };
-  // const content = clickedContent(curContent);
 
   return (
     <>
