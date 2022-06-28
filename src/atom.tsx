@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { Movie, TvShow } from "./api/api";
+import { Genres, Movie, TvShow } from "./api/api";
 
 export const curMovieData = atom<Movie[] | null>({
   key: "movieList",
@@ -14,4 +14,14 @@ export const curTvData = atom<TvShow[] | null>({
 export const curContentData = atom<any>({
   key: "searchList",
   default: null,
+});
+
+export const movieGenre = atom<Genres[]>({
+  key: "movieGenre",
+  default: [],
+});
+
+export const tvGenre = atom<Genres[]>({
+  key: "tvGenre",
+  default: [],
 });

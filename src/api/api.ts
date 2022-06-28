@@ -1,5 +1,3 @@
-import { json } from "stream/consumers";
-
 const API_KEY = "83abefa42986ae190c0bbb24c6d2e0ae";
 const BASE_PATH = "https://api.themoviedb.org/3";
 
@@ -51,6 +49,15 @@ export interface GetTvList {
   total_results: number;
 }
 
+export interface Genres {
+  id: number;
+  name: string;
+}
+
+export interface GenreList {
+  genres: Genres[];
+}
+
 export function getMovies(category: String) {
   return fetch(`${BASE_PATH}/movie/${category}?api_key=${API_KEY}`)
     .then((response) => response.json())
@@ -93,4 +100,10 @@ export function searchMovie(query: string | null) {
       );
       return { ...json, results: filterd };
     });
+}
+
+export function getContentGenre(content: string) {
+  return fetch(
+    `${BASE_PATH}/genre/${content}/list?api_key=${API_KEY}&language=en-US`,
+  ).then((response) => response.json());
 }

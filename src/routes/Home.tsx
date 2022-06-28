@@ -1,10 +1,17 @@
 import { useQuery } from "react-query";
-import { getMovies, GetMovieList, Movie } from "../api/api";
+import {
+  getMovies,
+  GetMovieList,
+  Movie,
+  Genres,
+  getContentGenre,
+  GenreList,
+} from "../api/api";
 import { makeImagePath, sliceArr } from "../utility/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "../components/Slider";
-import { useRecoilValue } from "recoil";
-import { curMovieData } from "../atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { curMovieData, movieGenre, tvGenre } from "../atom";
 import { Banner, Loader, Overview, Title, Wrapper } from "../components/Styled";
 import { Overlay } from "../components/Overlay";
 
@@ -27,8 +34,22 @@ function Home() {
   const { data: upComing, isLoading: upComingIsLoading } =
     useQuery<GetMovieList>(["movies", "upcoming"], () => getMovies("upcoming"));
 
-  const curMovie = useRecoilValue(curMovieData);
+  const { data: getMovieGenres } = useQuery<GenreList>(["genre", "movie"], () =>
+    getContentGenre("movie"),
+  );
 
+  const { data: getTvGenres } = useQuery<GenreList>(["genre", "tv"], () =>
+    getContentGenre("tv"),
+  );
+
+  const [movieGenres, setMovieGenre] = useRecoilState(movieGenre);
+  const [tvGenres, setTvGenre] = useRecoilState(tvGenre);
+  useEffect(() => {
+    if (!movieGenres.length) setMovieGenre(getMovieGenres?.genres as Genres[]);
+    if (!tvGenres.length) setTvGenre(getTvGenres?.genres as Genres[]);
+  }, []);
+
+  const curMovie = useRecoilValue(curMovieData);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const incraseIndex = () => {

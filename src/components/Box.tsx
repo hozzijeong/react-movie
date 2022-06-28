@@ -36,7 +36,8 @@ const boxVariants = {
   },
   hover: {
     scale: 1.3,
-    // y: -80,
+    y: -80,
+    cursor: "pointer",
     transition: {
       delay: 0.5,
       duaration: 0.1,
@@ -61,6 +62,7 @@ interface BoxInterface {
 }
 
 function Box({ data, category }: BoxInterface) {
+  // console.log(data);
   const nav = useNavigate();
   const curLoc = useLocation();
   const [searchParams, _] = useSearchParams();
