@@ -7,7 +7,6 @@ interface Detail {
 }
 
 function MovieDetail({ content }: Detail) {
-  console.log(content);
   return (
     <div style={{ position: "relative" }}>
       <BigCover

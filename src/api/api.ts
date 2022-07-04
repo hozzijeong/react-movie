@@ -163,48 +163,36 @@ export interface TvDetailInterface {
   vote_count: number;
 }
 
+interface FilterCondition {
+  backdrop_path: string;
+}
+
+interface Results {
+  results: [];
+}
+
 export function getMovies(category: String) {
   return fetch(`${BASE_PATH}/movie/${category}?api_key=${API_KEY}`)
     .then((response) => response.json())
-    .then((json) => {
-      const filterd = json.results?.filter(
-        (x: Movie) => x.backdrop_path !== null,
-      );
-      return { ...json, results: filterd };
-    });
+    .then(returnFilterd);
 }
 
 export function getTVShow(category: String) {
   return fetch(`${BASE_PATH}/tv/${category}?api_key=${API_KEY}`)
     .then((response) => response.json())
-    .then((json) => {
-      const filterd = json.results?.filter(
-        (x: TvShow) => x.backdrop_path !== null,
-      );
-      return { ...json, results: filterd };
-    });
+    .then(returnFilterd);
 }
 
 export function searchTVShow(query: string | null) {
   return fetch(`${BASE_PATH}/search/tv/?api_key=${API_KEY}&query=${query}`)
     .then((response) => response.json())
-    .then((json) => {
-      const filterd = json.results?.filter(
-        (x: TvShow) => x.backdrop_path !== null,
-      );
-      return { ...json, results: filterd };
-    });
+    .then(returnFilterd);
 }
 
 export function searchMovie(query: string | null) {
   return fetch(`${BASE_PATH}/search/movie/?api_key=${API_KEY}&query=${query}`)
     .then((response) => response.json())
-    .then((json) => {
-      const filterd = json.results?.filter(
-        (x: Movie) => x.backdrop_path !== null,
-      );
-      return { ...json, results: filterd };
-    });
+    .then(returnFilterd);
 }
 
 export function getContentGenre(content: string) {
@@ -223,3 +211,11 @@ export function getTvDetail(id: number) {
     (response) => response.json(),
   );
 }
+
+const getFilterd = <T extends FilterCondition>(x: T): boolean =>
+  x.backdrop_path !== null;
+
+const returnFilterd = <T extends Results>(json: T) => {
+  const filterd = json.results?.filter(getFilterd);
+  return { ...json, results: filterd };
+};
