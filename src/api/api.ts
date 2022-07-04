@@ -1,3 +1,5 @@
+import { getFilterd } from "../utility/utils";
+
 const API_KEY = "83abefa42986ae190c0bbb24c6d2e0ae";
 const BASE_PATH = "https://api.themoviedb.org/3";
 
@@ -163,11 +165,7 @@ export interface TvDetailInterface {
   vote_count: number;
 }
 
-interface FilterCondition {
-  backdrop_path: string;
-}
-
-interface Results {
+export interface Results {
   results: [];
 }
 
@@ -211,9 +209,6 @@ export function getTvDetail(id: number) {
     (response) => response.json(),
   );
 }
-
-const getFilterd = <T extends FilterCondition>(x: T): boolean =>
-  x.backdrop_path !== null;
 
 const returnFilterd = <T extends Results>(json: T) => {
   const filterd = json.results?.filter(getFilterd);

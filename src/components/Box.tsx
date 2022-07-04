@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { Genres } from "../api/api";
 import { movieGenre, tvGenre } from "../atom";
 import { makeImagePath } from "../utility/utils";
 
@@ -72,6 +72,18 @@ interface BoxInterface {
   category: string;
 }
 
+const returnCategory = (category: string) =>
+  category === "movies" ? movieGenre : tvGenre;
+
+const findGenres = (x: number, contentGenres: Genres[]) =>
+  contentGenres?.find((ele) => ele.id === x)?.name;
+
+const returnPathName = (pathName: string) =>
+  pathName === "/" ? "movies" : pathName;
+
+const returnKeyWord = (keyword: string) =>
+  keyword ? "?keyword=" + keyword : "";
+
 function Box({ data, category }: BoxInterface) {
   const nav = useNavigate();
   const curLoc = useLocation();
@@ -79,18 +91,16 @@ function Box({ data, category }: BoxInterface) {
   const keyword = searchParams.get("keyword");
   const onBoxClicked = (dataId: number) => {
     nav(
-      `${curLoc.pathname === "/" ? "movies" : curLoc.pathname}/${dataId}${
-        keyword ? "?keyword=" + keyword : ""
-      }`,
+      `${returnPathName(curLoc.pathname)}/${dataId}${returnKeyWord(
+        keyword as string,
+      )}`,
     );
   };
 
-  const contentGenres = useRecoilValue(
-    category === "movies" ? movieGenre : tvGenre,
-  );
+  const contentGenres = useRecoilValue(returnCategory(category));
 
-  const genreArr = data.genre_ids.map(
-    (x: number) => contentGenres?.find((ele) => ele.id === x)?.name,
+  const genreArr = data.genre_ids.map((x: number) =>
+    findGenres(x, contentGenres),
   );
   return (
     <>

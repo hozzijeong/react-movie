@@ -96,10 +96,7 @@ function Header() {
 
   const nav = useNavigate();
   const { register, handleSubmit } = useForm<Form>();
-  const onValid = (data: Form) => {
-    nav(`/search?keyword=${data.keyword}`);
-  };
-
+  const onValid = (data: Form) => nav(`/search?keyword=${data.keyword}`);
   useEffect(() => {
     scrollY.onChange(() =>
       navAnimation.start(`${scrollY.get() > 30 ? "nonTop" : "top"}`),

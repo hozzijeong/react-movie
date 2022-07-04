@@ -33,19 +33,11 @@ interface ISlider {
   results: any[] | null;
   toggleLeaving?: () => void;
   index: number;
-  // offset: number;
   title: string;
   category: string;
 }
 
-function Slider({
-  results,
-  toggleLeaving,
-  index,
-  // offset,
-  title,
-  category,
-}: ISlider) {
+function Slider({ results, toggleLeaving, index, title, category }: ISlider) {
   return (
     <SliderContainer>
       <CategoryTitle>{title}</CategoryTitle>

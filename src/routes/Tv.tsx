@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { GetTvList, getTVShow, TvShow } from "../api/api";
-import { makeImagePath, sliceArr } from "../utility/utils";
+import { incraseIndex, makeImagePath, sliceArr } from "../utility/utils";
 import { useState } from "react";
 import Slider from "../components/Slider";
 import { Banner, Loader, Overview, Title, Wrapper } from "../components/Styled";
@@ -29,15 +29,6 @@ function Tv() {
 
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
-  const incraseIndex = () => {
-    if (airingToday) {
-      if (leaving) return;
-      toggleLeaving();
-      const totalMovies = airingToday.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
-    }
-  };
   const offset = 6;
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
@@ -53,7 +44,14 @@ function Tv() {
       ) : (
         <>
           <Banner
-            onClick={incraseIndex}
+            onClick={() =>
+              incraseIndex(
+                airingToday ? airingToday.results.length : 0,
+                setIndex,
+                leaving,
+                setLeaving,
+              )
+            }
             bgPhoto={makeImagePath(latest?.backdrop_path || "")}
           >
             <Title>{latest?.name}</Title>
@@ -65,7 +63,6 @@ function Tv() {
               results={sliceArr(airingToday?.results, offset, index)}
               toggleLeaving={toggleLeaving}
               index={index}
-              // offset={offset}
               title="Airing Today"
               category="tv"
             />
@@ -76,7 +73,6 @@ function Tv() {
               results={sliceArr(topRated?.results, offset, index)}
               toggleLeaving={toggleLeaving}
               index={index}
-              // offset={offset}
               title="Top Rated"
               category="tv"
             />
@@ -87,7 +83,6 @@ function Tv() {
               results={sliceArr(popular?.results, offset, index)}
               toggleLeaving={toggleLeaving}
               index={index}
-              // offset={offset}
               title="Popular"
               category="tv"
             />
