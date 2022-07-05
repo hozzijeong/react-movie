@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Genres } from "../api/api";
 import { movieGenre, tvGenre } from "../atom";
-import { makeImagePath } from "../utility/utils";
+import { findGenres, makeImagePath } from "../utility/utils";
 
 const BoxContainer = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
@@ -74,9 +74,6 @@ interface BoxInterface {
 
 const returnCategory = (category: string) =>
   category === "movies" ? movieGenre : tvGenre;
-
-const findGenres = (x: number, contentGenres: Genres[]) =>
-  contentGenres?.find((ele) => ele.id === x)?.name;
 
 const returnPathName = (pathName: string) =>
   pathName === "/" ? "movies" : pathName;

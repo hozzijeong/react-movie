@@ -1,5 +1,5 @@
 import { AnimatePresence, useViewportScroll } from "framer-motion";
-import { useQuery } from "react-query";
+import { setLogger, useQuery } from "react-query";
 import {
   PathMatch,
   useMatch,

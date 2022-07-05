@@ -52,7 +52,8 @@ export const OverlayContainer = styled(motion.div)`
 export const BigContent = styled(motion.div)`
   position: absolute;
   width: 40vw;
-  height: 80vh;
+  height: auto;
+  min-height: 80vh;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -81,4 +82,10 @@ export const BigOverview = styled.p`
   padding: 20px;
   position: relative;
   color: ${(props) => props.theme.white.lighter};
+  h1 {
+    font-size: 48px;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 5px;
+  }
 `;

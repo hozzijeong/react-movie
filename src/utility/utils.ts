@@ -1,3 +1,5 @@
+import { Genres } from "../api/api";
+
 interface FilterCondition {
   backdrop_path: string;
 }
@@ -28,3 +30,6 @@ export const incraseIndex = (
 
 export const getFilterd = <T extends FilterCondition>(x: T): boolean =>
   x.backdrop_path !== null;
+
+export const findGenres = (x: number, contentGenres: Genres[]) =>
+  contentGenres?.find((ele) => ele.id === x)?.name;

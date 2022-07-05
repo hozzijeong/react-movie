@@ -60,9 +60,15 @@ export interface GenreList {
   genres: Genres[];
 }
 
-interface ProductionContiries {
+export interface ProductionContiries {
   iso_3166_1: string;
   name: string;
+}
+export interface ProductionCompanies {
+  id: number;
+  logo_path: string;
+  name: string;
+  origin_country: string;
 }
 
 interface SpokenLanguages {
@@ -85,6 +91,7 @@ export interface MovieDetailInterface {
   popularity: number;
   poster_path: null;
   production_countries: ProductionContiries[];
+  production_companies: ProductionCompanies[];
   release_date: string;
   revenue: number;
   runtime: number;
