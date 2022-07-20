@@ -34,10 +34,14 @@ export function Overlay({ category }: OverlayInterface) {
   const id = Number(searchPathMatch?.params.id);
 
   const getContentData = (id: number) =>
-    category === "movies" ? getMovieDetail(id) : getTvDetail(id);
+    !Number.isNaN(id)
+      ? category === "movies"
+        ? getMovieDetail(id)
+        : getTvDetail(id)
+      : null;
 
   const { data, isLoading, isSuccess } = useQuery<
-    MovieDetailInterface | TvDetailInterface
+    MovieDetailInterface | TvDetailInterface | null
   >(["overlay", id], () => getContentData(id), {
     retry: !isNaN(id),
     onError: (e) => failFetch("Error Occure!"),

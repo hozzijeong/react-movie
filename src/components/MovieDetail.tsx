@@ -1,51 +1,21 @@
-import styled from "styled-components";
 import {
   Genres,
   MovieDetailInterface,
   ProductionCompanies,
   ProductionContiries,
 } from "../api/api";
-import { makeImagePath } from "../utility/utils";
-import { BigCover, BigOverview, BigTitle } from "./Styled";
+import { getNames, makeImagePath, replaceDateDarsh } from "../utility/utils";
+import {
+  BigCover,
+  BigOverview,
+  BigTitle,
+  InfoDiv,
+  Relative,
+  TitleDiv,
+} from "./Styled";
 
 interface Detail {
   content: MovieDetailInterface;
-}
-
-const TitleDiv = styled.div`
-  position: absolute;
-  top: 0;
-  height: 400px;
-  width: 100%;
-`;
-
-const Relative = styled.div`
-  position: sticky;
-  top: 20px;
-`;
-
-const InfoDiv = styled.div`
-  padding: 20px;
-  position: relative;
-  p {
-    font-size: 18px;
-    line-height: initial;
-    span {
-      font-weight: bold;
-    }
-  }
-`;
-
-interface Name {
-  name: string;
-}
-
-function getNames<T extends Name>(array: T[]) {
-  return array.map((x: T) => x.name + " ");
-}
-
-function replaceDateDarsh(date: string) {
-  return date.replaceAll("-", ".");
 }
 
 function MovieDetail({ content }: Detail) {
@@ -62,14 +32,7 @@ function MovieDetail({ content }: Detail) {
 
   return (
     <Relative>
-      <BigCover
-        style={{
-          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-            content?.backdrop_path,
-            "w500",
-          )})`,
-        }}
-      />
+      <BigCover imagePath={makeImagePath(content?.backdrop_path, "w500")} />
       <TitleDiv>
         <BigTitle>{content?.title}</BigTitle>
       </TitleDiv>

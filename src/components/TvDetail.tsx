@@ -1,6 +1,13 @@
 import { TvDetailInterface } from "../api/api";
-import { makeImagePath } from "../utility/utils";
-import { BigCover, BigOverview, BigTitle } from "./Styled";
+import { makeImagePath, replaceDateDarsh } from "../utility/utils";
+import {
+  BigCover,
+  BigOverview,
+  BigTitle,
+  InfoDiv,
+  Relative,
+  TitleDiv,
+} from "./Styled";
 
 interface Detail {
   content: TvDetailInterface;
@@ -8,28 +15,41 @@ interface Detail {
 
 function TvDetail({ content }: Detail) {
   console.log(content);
+
+  const stars = Math.round(content.vote_average / 2);
+
   return (
-    <div style={{ position: "relative" }}>
-      <BigCover
-        style={{
-          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-            content?.backdrop_path,
-            "w500",
-          )})`,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          height: "400px",
-          width: "100%",
-        }}
-      >
+    <Relative>
+      <BigCover imagePath={makeImagePath(content?.backdrop_path, "w500")} />
+      <TitleDiv>
         <BigTitle>{content?.name}</BigTitle>
-      </div>
-      <BigOverview>{content?.overview}</BigOverview>
-    </div>
+      </TitleDiv>
+      <InfoDiv>
+        {/* <p>
+          <span>Release Date</span>: {replaceDateDarsh(content.release_date)}
+        </p>
+        <p>
+          <span>Genres</span>: {genresArray}
+        </p>
+        <p>
+          <span>Production Contiries</span>: {contriesArray}
+        </p>
+        <p>
+          <span>Runnig Time</span>: {content.runtime}min
+        </p>
+        <p>
+          <span>Production Companies</span>: {companiesArray}
+        </p> */}
+        <p>
+          <span>Rating</span>: {"🌕".repeat(stars)}
+          {"🌑".repeat(5 - stars)}
+        </p>
+        <BigOverview>
+          <h1>{content.tagline}</h1>
+          {content?.overview}
+        </BigOverview>
+      </InfoDiv>
+    </Relative>
   );
 }
 

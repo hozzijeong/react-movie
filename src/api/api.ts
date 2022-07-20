@@ -207,14 +207,18 @@ export function getContentGenre(content: string) {
 }
 
 export function getMovieDetail(id: number) {
-  return fetch(
-    `${BASE_PATH}/movie/${id}?api_key=${API_KEY}&language=en-US`,
-  ).then((response) => response.json());
+  return Number.isNaN(id)
+    ? null
+    : fetch(`${BASE_PATH}/movie/${id}?api_key=${API_KEY}&language=en-US`).then(
+        (response) => response.json(),
+      );
 }
 export function getTvDetail(id: number) {
-  return fetch(`${BASE_PATH}/tv/${id}?api_key=${API_KEY}&language=en-US`).then(
-    (response) => response.json(),
-  );
+  return Number.isNaN(id)
+    ? null
+    : fetch(`${BASE_PATH}/tv/${id}?api_key=${API_KEY}&language=en-US`).then(
+        (response) => response.json(),
+      );
 }
 
 const returnFilterd = <T extends Results>(json: T) => {

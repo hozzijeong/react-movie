@@ -33,3 +33,15 @@ export const getFilterd = <T extends FilterCondition>(x: T): boolean =>
 
 export const findGenres = (x: number, contentGenres: Genres[]) =>
   contentGenres?.find((ele) => ele.id === x)?.name;
+
+interface Name {
+  name: string;
+}
+
+export function getNames<T extends Name>(array: T[]) {
+  return array.map((x: T) => x.name + " ");
+}
+
+export function replaceDateDarsh(date: string) {
+  return date.replaceAll("-", ".");
+}

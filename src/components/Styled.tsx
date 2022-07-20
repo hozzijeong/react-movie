@@ -62,11 +62,13 @@ export const BigContent = styled(motion.div)`
   background-color: ${(props) => props.theme.black.veryDark};
 `;
 
-export const BigCover = styled.div`
+export const BigCover = styled.div<{ imagePath: string }>`
   width: 100%;
   background-size: cover;
   background-position: center center;
   height: 400px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)),
+    url(${(props) => props.imagePath});
 `;
 
 export const BigTitle = styled.div`
@@ -87,5 +89,29 @@ export const BigOverview = styled.p`
     font-weight: bold;
     font-style: italic;
     margin-bottom: 5px;
+  }
+`;
+
+export const TitleDiv = styled.div`
+  position: absolute;
+  top: 0;
+  height: 400px;
+  width: 100%;
+`;
+
+export const Relative = styled.div`
+  position: sticky;
+  top: 20px;
+`;
+
+export const InfoDiv = styled.div`
+  padding: 20px;
+  position: relative;
+  p {
+    font-size: 18px;
+    line-height: initial;
+    span {
+      font-weight: bold;
+    }
   }
 `;
